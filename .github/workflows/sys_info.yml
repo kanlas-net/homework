@@ -1,0 +1,25 @@
+name: Get System Info
+
+on:
+  workflow_dispatch:
+    inputs:
+      info-type:
+        description: 'Type CPU, MEM, RELEASE or ALL'
+        default: 'ALL'
+jobs:
+  fetch-info:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Copy script
+        run: cp ./sys_info.sh ./.github/actions/
+      - name: Executing action
+        uses: ./.github/actions
+        with:
+          command: ${{ github.event.inputs.info-type }}
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: log.txt
+          path: /home/runner/work/homework/homework/log.txt
